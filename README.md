@@ -7,6 +7,11 @@ This repository contains the steps and configurations for setting up Active Dire
 - VMware Workstation or another virtualization platform
 - Windows Server 2012 ISO
 - Windows 10 ISO (for client setup)
+  
+## Topology
+
+![topology](https://github.com/iamabdullahifti/active_directory/assets/129957445/bd39e594-935f-4da8-9486-ea35e6e2bfc1)
+
 
 ## Steps
 
@@ -192,7 +197,7 @@ Feel free to contribute or suggest improvements to this setup guide.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License 
 
 ---
 
