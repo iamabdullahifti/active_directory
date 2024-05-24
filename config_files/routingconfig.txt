@@ -1,0 +1,187 @@
+# Routing Configuration
+pushd routing
+reset
+popd
+# IP Configuration
+pushd routing ip
+reset
+set loglevel error
+add preferenceforprotocol proto=LOCAL preflevel=1
+add preferenceforprotocol proto=STATIC preflevel=3
+add preferenceforprotocol proto=NONDOD preflevel=5
+add preferenceforprotocol proto=AUTOSTATIC preflevel=7
+add preferenceforprotocol proto=NetMgmt preflevel=10
+add preferenceforprotocol proto=EBGP preflevel=20
+add preferenceforprotocol proto=RIP preflevel=120
+add preferenceforprotocol proto=IBGP preflevel=200
+add interface name="Internal Network" state=enable
+set filter name="Internal Network" fragcheck=disable
+add interface name="Local Area Connection* 9" state=enable
+set filter name="Local Area Connection* 9" fragcheck=disable
+add interface name="Private" state=enable
+set filter name="Private" fragcheck=disable
+add interface name="Internal" state=enable
+add interface name="Loopback" state=enable
+popd
+# End of IP configuration
+
+
+
+# ---------------------------------- 
+# DNS Proxy configuration            
+# ---------------------------------- 
+pushd routing ip dnsproxy
+uninstall
+
+
+popd
+# End of DNS proxy configuration
+
+
+
+# ---------------------------------- 
+# IGMP Configuration                 
+# ---------------------------------- 
+pushd routing ip igmp
+uninstall
+install
+set global loglevel = ERROR
+
+
+# IGMP configuration for interface "Internal Network"
+
+delete interface name="Internal Network"
+add interface name="Internal Network" igmpprototype=IGMPRTRV3 ifenabled=enable robustvar=2 startupquerycount=2 startupqueryinterval=31 genqueryinterval=125 genqueryresptime=10 lastmemquerycount=2 lastmemqueryinterval=1000 accnonrtralertpkts=YES
+
+
+# IGMP configuration for interface "Private"
+
+delete interface name="Private"
+add interface name="Private" igmpprototype=IGMPPROXY ifenabled=enable
+
+
+popd
+# End of IGMP configuration
+
+
+
+# ---------------------------------- 
+# NAT configuration                  
+# ---------------------------------- 
+pushd routing ip nat
+uninstall
+install
+set global tcptimeoutmins=1440 udptimeoutmins=1 loglevel=ERROR
+
+
+#
+#NAT Configuration For Interface Internal Network
+#
+add interface name="Internal Network" mode=PRIVATE
+
+
+#
+#NAT Configuration For Interface Private
+#
+add interface name="Private" mode=FULL
+
+
+#
+#NAT Configuration For Interface Internal
+#
+add interface name="Internal" mode=PRIVATE
+
+
+popd
+
+
+
+
+# ---------------------------------- 
+# DHCP Relay Agent configuration     
+# ---------------------------------- 
+pushd routing ip relay
+uninstall
+
+
+popd
+# End of DHCP Relay configuration
+
+
+
+# ---------------------------------- 
+# RIP configuration                  
+# ---------------------------------- 
+pushd routing ip rip
+uninstall
+
+
+popd
+# End of RIP configuration
+
+
+
+# ---------------------------------- 
+# Router Discovery Configuration     
+# ---------------------------------- 
+pushd routing ip routerdiscovery
+uninstall
+add interface name="Internal Network" disc=disable minint=7 maxint=10 life=30 level=0
+add interface name="Local Area Connection* 9" disc=disable minint=7 maxint=10 life=30 level=0
+add interface name="Private" disc=disable minint=7 maxint=10 life=30 level=0
+add interface name="Internal" disc=disable minint=7 maxint=10 life=30 level=0
+add interface name="Loopback" disc=disable minint=7 maxint=10 life=30 level=0
+
+
+popd
+
+
+# ---------------------------------- 
+# DHCP Allocator Configuration       
+# ---------------------------------- 
+pushd routing ip autodhcp
+uninstall
+
+
+popd
+# End of DHCP Allocator Configuration
+
+# IPv6 Configuration
+pushd routing ipv6
+set filter name="Internal Network" fragcheck=disable
+set filter name="Local Area Connection* 9" fragcheck=disable
+set filter name="Private" fragcheck=disable
+popd
+# End of IPv6 configuration
+
+
+
+# ---------------------------------- 
+# DHCPv6 Relay Agent configuration     
+# ---------------------------------- 
+pushd routing ipv6 relayv6
+uninstall
+
+
+popd
+# End of DHCPv6 Relay configuration
+
+
+                                            
+# ----------------------------------------------------------------------- 
+# Remote Access Demand Dial Configuration                                 
+# ----------------------------------------------------------------------- 
+# This script is not guaranteed to work across machines with different    
+# Physical Demand Dial devices like Modems. Before executing this script, 
+# all these devices should be installed with same name and on same port   
+# ----------------------------------------------------------------------- 
+# Known issues and limitations : 
+# 1. The user needs to set the password for dial out credentials either here 
+# in the script for every interface enumerated below or later on using the   
+# MMC or "ro demanddial set credentials" command.                         
+# 2. The user needs to manually set the EAP settings like PEAP or installing 
+# Smartcard or other Certificates on the machine                             
+
+pushd ro demanddial
+
+
